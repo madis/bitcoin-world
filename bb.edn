@@ -1,0 +1,28 @@
+{:paths ["src"]
+ :tasks
+ {download-apps {:doc "Downloads necessary apps (bitcoin core, ...)"
+                 :task (let [apps [{:folder "bitcoin-core"
+                                    :url "https://bitcoin.org/bin/bitcoin-core-25.0/bitcoin-25.0-x86_64-linux-gnu.tar.gz"
+                                    :download "temp/bitcoin-core.tar.gz"
+                                    :extract (fn [opts] (shell "tar zxvf" (:download opts) "--directory" (str "apps/" (:folder opts))))}
+                                   {:folder "core-lightning"
+                                    :url "https://github.com/ElementsProject/lightning/releases/download/v23.11/clightning-v23.11-Ubuntu-22.04.tar.xz"
+                                    :download "temp/core-lightning.tar.xz"
+                                    :extract (fn [opts] (shell "tar xf" (:download %) "--directory" (str "apps/" (:folder %))))}]]
+                         (shell "mkdir temp")
+                         (doseq [{:keys [folder url download extract] :as opts} apps]
+                           (shell "wget -O" download url)
+                           (shell "mkdir -p" (str "apps/" folder))
+                           (extract opts)))}
+  bitcoin-core {:doc "Bitcoin Core tasks"
+                :requires [bitcoin-world.tasks.bitcoin-core]
+                :task (bitcoin-world.tasks.bitcoin-core/daemon)}
+  bitcoin-cli {:doc "Commands through bitcoin-cli"
+               :requires [bitcoin-world.tasks.bitcoin-core]
+               :task (bitcoin-world.tasks.bitcoin-core/cli *command-line-args*)}
+  c-lightning-daemon {:doc "Core Lightning Daemon commands"
+                      :requires [bitcoin-world.tasks.core-lightning]
+                      :task (bitcoin-world.tasks.core-lightning/daemon (first *command-line-args*) (rest *command-line-args*))}
+  c-lightning-cli {:doc "Core Lightning CLI commands"
+                   :requires [bitcoin-world.tasks.core-lightning]
+                   :task (bitcoin-world.tasks.core-lightning/cli (first *command-line-args*) (rest *command-line-args*))}}}

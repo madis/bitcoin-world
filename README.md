@@ -38,3 +38,25 @@ Location: `apps/bitcoin-core`
 
 Download from: https://github.com/ElementsProject/lightning/releases/download/v23.11/clightning-v23.11-Ubuntu-22.04.tar.xz
 Location: `apps/core-lightning`
+
+To get `clnrest` plugin working [clnrest docs](https://docs.corelightning.org/docs/rest)
+  - if other plugins (like Boltz's hold plugin) have Python dependencies, run this within that poetry env
+    + `source /home/madis/.cache/pypoetry/virtualenvs/plugins-L4oZGMpY-py3.11/bin/activate`
+  - `pip install -r ./apps/core-lightning/usr/libexec/c-lightning/plugins/clnrest/requirements.txt`
+
+### Plugins
+
+For HODL invoices [Boltz hold](https://github.com/BoltzExchange/boltz-backend/blob/master/tools/plugins/hold) plugin is used.
+To install it:
+1. Clone git@github.com:BoltzExchange/boltz-backend.git
+2. Move or symlink `tools/plugins/hold` under `apps/core-lightning-plugins/hold`
+3. Install the dependencies using poetry
+  - under `apps/core-lightning-plugins/hold` call `poetry install`
+4. Active python virtual environment to have the plugin dependencies available
+  - `poetry shell`
+  - or if you don't want new shell:
+    ```bash
+    source `poetry env info --path`/bin/activate
+
+    ```
+5. In this new or updated shell run the core lightning daemon as usual

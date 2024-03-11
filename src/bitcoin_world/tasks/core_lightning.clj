@@ -34,6 +34,11 @@
                 ["--rest-protocol=" "https"]
                 ["--rest-execmode=" "production"]
                 ["--rest-domain=" "devbox"]
+                ; For clnrest https://docs.corelightning.org/docs/rest
+                ["--clnrest-port=" (+ port 3)]
+                ["--clnrest-protocol=" "http"]
+                ["--clnrest-host=" "0.0.0.0"]
+                ["--plugin=" "/home/madis/bitcoin-world/apps/core-lightning-plugins/hold/plugin.py"]
                 ])))
 
 (defn cli-command [node]

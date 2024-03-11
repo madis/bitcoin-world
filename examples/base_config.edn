@@ -1,0 +1,4 @@
+{:bitcoin-cli ""
+ :plugin-paths
+ ["/path/to/plugin.py"
+  "/path/to/another-plugin.py"]}

@@ -1,0 +1,12 @@
+{:name :triangle
+ :root-path "/home/madis/bitcoin-world/data/triangle"
+ :starting-port 7000
+ :nodes
+ [{:name :alice   :implementation :c-lightning}
+  {:name :bob     :implementation :c-lightning}
+  {:name :charlie :implementation :c-lightning}]
+
+ :channels
+ [{:from [:alice 1000000]   :to [:bob 0]}
+  {:from [:bob 2000000]     :to [:charlie 0]}
+  {:from [:charlie 3000000] :to [:alice 0]}]}

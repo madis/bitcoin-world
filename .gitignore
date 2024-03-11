@@ -1,4 +1,4 @@
-apps/*/
-data/*/
+apps/**
+data/*
 config/*/
 notes.md

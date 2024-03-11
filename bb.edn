@@ -25,4 +25,14 @@
                       :task (bitcoin-world.tasks.core-lightning/daemon (first *command-line-args*) (rest *command-line-args*))}
   c-lightning-cli {:doc "Core Lightning CLI commands"
                    :requires [bitcoin-world.tasks.core-lightning]
-                   :task (bitcoin-world.tasks.core-lightning/cli (first *command-line-args*) (rest *command-line-args*))}}}
+                   :task (bitcoin-world.tasks.core-lightning/cli (first *command-line-args*) (rest *command-line-args*))}
+  build-graph {:doc "According to graph definition EDN start lightning nodes, fund & connect them"
+               :requires [bitcoin-world.tasks.build-graph]
+               :task (bitcoin-world.tasks.build-graph/cli *command-line-args*)}
+  run-tests {:extra-paths ["test"]
+            :extra-deps {io.github.cognitect-labs/test-runner
+                         {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+            :task (exec 'cognitect.test-runner.api/test)
+            :exec-args {:dirs ["test"]}
+            :org.babashka/cli {:coerce {:nses [:symbol]
+                                        :vars [:symbol]}}}}}
